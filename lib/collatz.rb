@@ -1,9 +1,12 @@
 class Collatz
   def self.find_longest_chain(maximum)
-    maximum.times.map { |n| n + 1 }.reduce { |memo, n|
+    result = maximum.times.map { |n| n + 1 }.reduce({}){ |memo, n|
       current_value = calculate_chain(n).length
-      calculate_chain(memo).length > current_value ? memo : n
+      (memo[:chain_length] || 0) > current_value ?
+        memo :
+        { number: n, chain_length: current_value }
     }
+    result[:number]
   end
 
   def self.calculate_chain(seed)
